@@ -1,12 +1,17 @@
 package com.educandoweb.course.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -20,6 +25,10 @@ public class Users implements Serializable {
 	private String email;
 	private String phone;
 	private String password;
+	
+	@OneToMany(mappedBy = "client")
+	@JsonIgnore
+	private List<Orders> orders = new ArrayList<>();
 	
 	public Users() {
 		
@@ -90,6 +99,9 @@ public class Users implements Serializable {
 		Users other = (Users) obj;
 		return Objects.equals(id, other.id);
 	}
-	
 
+	public List<Orders> getOrders() {
+		return orders;
+	}
+	
 }
