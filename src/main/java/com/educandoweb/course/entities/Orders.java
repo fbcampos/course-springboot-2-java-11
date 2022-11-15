@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.educandoweb.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -24,18 +25,22 @@ public class Orders implements Serializable{
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd'T'HH:mm:ss", timezone = "GMT")
 	private Instant moment;
 	
+	private Integer orderStatus;
+	
 	@ManyToOne
 	@JoinColumn(name="client_id")
 	private Users client;
+	
 	
 	public Orders() {
 		
 	}
 
-	public Orders(Long id, Instant moment, Users client) {
+	public Orders(Long id, Instant moment, OrderStatus orderStatus, Users client) {
 		super();
 		this.id = id;
 		this.moment = moment;
+		this.orderStatus = orderStatus.getCode();
 		this.client = client;
 	}
 
@@ -61,6 +66,16 @@ public class Orders implements Serializable{
 
 	public void setClient(Users client) {
 		this.client = client;
+	}	
+
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if(orderStatus != null) {
+			this.orderStatus = orderStatus.getCode();			
+		}		
 	}
 
 	@Override
